@@ -2,7 +2,7 @@ import CIcon from '@coreui/icons-react';
 import { CButton, CCard, CCardBody, CCardFooter, CCardHeader, CCol, CFormGroup, CInput, CLabel, CRow, CSelect } from '@coreui/react';
 import React from 'react';
 
-function newAccount() {
+function NewAccount() {
   return (
     <>
     <CCard>
@@ -51,4 +51,4 @@ function newAccount() {
   );
 }
 
-export default newAccount;
+export default NewAccount;

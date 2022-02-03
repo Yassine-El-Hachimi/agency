@@ -9,7 +9,7 @@ const Historique = () => {
   const [transferts, updateTransferts] = useState([]);
   useEffect(() => {
     axios.get("http://127.0.0.1:8080/transfert/").then((response) => {
-      updateTransferts(response);
+      updateTransferts(response.data);
     });
   }, []);
       const fields = ['Id Transfert','Id Donneur', 'Id Bénéficiaire','Type', 'Etat']

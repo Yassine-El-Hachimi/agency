@@ -8,8 +8,8 @@ const Historique = React.lazy(() => import('./views/historique/Historique'))
 const NewClient = React.lazy(() => import('./views/clients/CreateClient'));
 const AllClients = React.lazy(() => import('./views/clients/AllClients'));
 
-const NewAccount = React.lazy(() => import('./views/comptes/newAccount'));
-const AllAccounts = React.lazy(() => import('./views/comptes/allAccounts'))
+const NewAccount = React.lazy(() => import('./views/comptes/NewAccount'));
+const AllAccounts = React.lazy(() => import('./views/comptes/AllAccounts'))
 
 //Template Components
 const Toaster = React.lazy(() => import('./views/notifications/toaster/Toaster'));

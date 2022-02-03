@@ -6,9 +6,11 @@ function AllClients() {
   const [clients, updateClients] = useState([]);
   useEffect(() => {
     axios.get("http://127.0.0.1:8080/client/").then((response) => {
-      updateClients(response);
+      updateClients(response.data);
+      console.log(response.data);
     });
-  }, []);
+    
+    }, []);
       const fields = ['id','Full Name', 'GSM', 'Has Account']
     return (
         <>
@@ -36,7 +38,7 @@ function AllClients() {
                 'GSM':
                   (item)=>(
                     <td>
-                        {item.telephone}
+                        {item.gsm}
                     </td>
                   ),
                 'Has Account':

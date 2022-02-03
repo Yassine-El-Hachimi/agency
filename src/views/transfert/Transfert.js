@@ -20,13 +20,35 @@ import {
   CTabPane,
   CTabs,
 } from "@coreui/react";
-import React from "react";
+import React, { useState } from "react";
 import { DocsLink } from "src/reusable";
 import TransfertEspeceEspece from "./TransfertEspeceEspece";
 import TransfertEspeceGAB from "./TransfertEspeceGAB";
 import TransfertEspeceSolde from "./TransfertEspeceSolde";
 
 const Transfert = () => {
+  const [IdClientBen,setIdClientBen] = useState(null);
+  const [IdClientDon,setIdClientDon] = useState(null);
+  const [type,setType] = useState('');
+
+  const handleClientBenChange = (event)=>{
+    setIdClientBen(event.target.value);
+  }
+  const handleClientDonChange = (event)=>{
+    setIdClientDon(event.target.value);
+  }
+  const handleTypeChange = (event)=>{
+    setType(event.target.value);
+  }
+
+  const handleSubmit = (event) => {
+    if(IdClientBen != null && IdClientDon != null && type !== '')
+    console.log(IdClientBen+' '+IdClientDon+' '+type);
+    else
+    alert('Remplissez tout les champs');
+    event.preventDefault();
+  }
+
   return (
     <>
       <CCard>
@@ -37,8 +59,8 @@ const Transfert = () => {
           <CRow>
             <CCol xs="6">
               <CFormGroup>
-                <CLabel htmlFor="name">Client Donneur</CLabel>
-                <CSelect custom name="ccmonth" id="ccmonth">
+                <CLabel htmlFor="name" >Client Donneur</CLabel>
+                <CSelect custom name="ccmonth" id="ccmonth" onChange={handleClientDonChange}>
                   <option value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option>
@@ -57,8 +79,8 @@ const Transfert = () => {
 
             <CCol xs="6">
               <CFormGroup>
-                <CLabel htmlFor="ccnumber">Client Bénéficiaire</CLabel>
-                <CSelect custom name="ccmonth" id="ccmonth">
+                <CLabel htmlFor="ccnumber" >Client Bénéficiaire</CLabel>
+                <CSelect custom name="ccmonth" id="ccmonth" onChange={handleClientBenChange}>
                   <option value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option>
@@ -79,7 +101,7 @@ const Transfert = () => {
             <CCol md="12" class="text-center">
               <CLabel>Type de transfert</CLabel>
             </CCol>
-            <CCol md="12">
+            <CCol md="12" onChange={handleTypeChange}>
               <CFormGroup variant="custom-radio" inline>
                 <CInputRadio
                   custom
@@ -117,7 +139,7 @@ const Transfert = () => {
           </CRow>
         </CCardBody>
         <CCardFooter>
-          <CButton type="submit" size="sm" color="success">
+          <CButton type="submit" size="sm" color="success" onClick={handleSubmit}>
             <CIcon name="cil-scrubber" /> Submit
           </CButton>
           <CButton type="reset" size="sm" color="danger">
