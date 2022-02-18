@@ -5,7 +5,7 @@ import axios from 'axios'
 function AllClients() {
   const [clients, updateClients] = useState([]);
   useEffect(() => {
-    axios.get("http://127.0.0.1:8080/client/").then((response) => {
+    axios.get("https://transfert-national.herokuapp.com/client/").then((response) => {
       updateClients(response.data);
       console.log(response.data);
     });

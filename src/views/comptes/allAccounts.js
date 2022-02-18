@@ -5,9 +5,10 @@ import axios from 'axios'
 function AllAccounts() {
     const [comptes, updateComptes] = useState([]);
     useEffect(() => {
-      axios.get("http://127.0.0.1:8080/comptes/").then((response) => {
+      axios.get("https://transfert-national.herokuapp.com/comptes/").then((response) => {
         updateComptes(response.data);
       });
+      
     }, []);
         const fields = ['id Client','Nom Complet', 'Solde', 'Date De Création']
   return (

@@ -16,38 +16,71 @@ import {
   CNavLink,
   CRow,
   CSelect,
+  CSwitch,
   CTabContent,
   CTabPane,
   CTabs,
 } from "@coreui/react";
-import React, { useState } from "react";
-import { DocsLink } from "src/reusable";
-import TransfertEspeceEspece from "./TransfertEspeceEspece";
-import TransfertEspeceGAB from "./TransfertEspeceGAB";
-import TransfertEspeceSolde from "./TransfertEspeceSolde";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+
 
 const Transfert = () => {
-  const [IdClientBen,setIdClientBen] = useState(null);
-  const [IdClientDon,setIdClientDon] = useState(null);
-  const [type,setType] = useState('');
+  const [clients, updateClients] = useState([]);
+  const [IdClientBen, setIdClientBen] = useState(null);
+  const [IdClientDon, setIdClientDon] = useState(null);
+  const [montant, setMontant] = useState(0);
+  const [motif, setMotif] = useState("");
+  const [type, setType] = useState("");
+  const [notification,setNotification] = useState(false);
 
-  const handleClientBenChange = (event)=>{
+  const handleClientBenChange = (event) => {
     setIdClientBen(event.target.value);
-  }
-  const handleClientDonChange = (event)=>{
+  };
+  const handleClientDonChange = (event) => {
     setIdClientDon(event.target.value);
-  }
-  const handleTypeChange = (event)=>{
+  };
+  const handleTypeChange = (event) => {
     setType(event.target.value);
+  };
+  const handleMontantChange = (event) => {
+    setMontant(event.target.value);
+  };
+  const handleMotifChange = (event) => {
+    setMotif(event.target.value);
+  };
+  const handleNotificationChange = (event) => {
+    setNotification(event.target.value);
   }
 
   const handleSubmit = (event) => {
-    if(IdClientBen != null && IdClientDon != null && type !== '')
-    console.log(IdClientBen+' '+IdClientDon+' '+type);
-    else
-    alert('Remplissez tout les champs');
+    if (IdClientBen != null && IdClientDon != null && type !== "") {
+      console.log(IdClientBen + " " + IdClientDon + " " + type + " " + montant);
+      const transfert = {
+        'clientBeneficaireId': IdClientBen,
+        'clientDonneurId': IdClientDon,
+        'typeTransfert': type,
+        'montant': montant,
+        'motif': motif,
+        'notification': notification
+      };
+
+      axios
+        .post("https://transfert-national.herokuapp.com/transfert/", transfert)
+        .then((response) => {
+          console.log(response.data);
+        });
+    } else alert("Remplissez tout les champs");
     event.preventDefault();
-  }
+  };
+
+  useEffect(() => {
+    axios
+      .get("https://transfert-national.herokuapp.com/client/")
+      .then((response) => {
+        updateClients(response.data);
+      });
+  }, []);
 
   return (
     <>
@@ -57,44 +90,48 @@ const Transfert = () => {
         </CCardHeader>
         <CCardBody>
           <CRow>
-            <CCol xs="6">
+            <CCol xs="4">
               <CFormGroup>
-                <CLabel htmlFor="name" >Client Donneur</CLabel>
-                <CSelect custom name="ccmonth" id="ccmonth" onChange={handleClientDonChange}>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6</option>
-                  <option value="7">7</option>
-                  <option value="8">8</option>
-                  <option value="9">9</option>
-                  <option value="10">10</option>
-                  <option value="11">11</option>
-                  <option value="12">12</option>
+                <CLabel htmlFor="name">Client Donneur</CLabel>
+                <CSelect
+                  custom
+                  name="ccmonth"
+                  id="ccmonth"
+                  onChange={handleClientDonChange}
+                >
+                  {clients.map((client, index) => (
+                    <option value={client.clientId}>{client.fullName}</option>
+                  ))}
                 </CSelect>
               </CFormGroup>
             </CCol>
 
-            <CCol xs="6">
+            <CCol xs="4">
               <CFormGroup>
-                <CLabel htmlFor="ccnumber" >Client Bénéficiaire</CLabel>
-                <CSelect custom name="ccmonth" id="ccmonth" onChange={handleClientBenChange}>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6</option>
-                  <option value="7">7</option>
-                  <option value="8">8</option>
-                  <option value="9">9</option>
-                  <option value="10">10</option>
-                  <option value="11">11</option>
-                  <option value="12">12</option>
+                <CLabel htmlFor="ccnumber">Client Bénéficiaire</CLabel>
+                <CSelect
+                  custom
+                  name="ccmonth"
+                  id="ccmonth"
+                  onChange={handleClientBenChange}
+                >
+                  {clients.map((client, index) => (
+                    <option value={client.clientId}>{client.fullName}</option>
+                  ))}
                 </CSelect>
               </CFormGroup>
+            </CCol>
+            <CCol xs="4">
+              <CFormGroup>
+                <CLabel htmlFor="ccnumber">Montant</CLabel>
+                <CInput type="number" onChange={handleMontantChange} />
+              </CFormGroup>
+            </CCol>
+          </CRow>
+          <CRow>
+            <CCol md="12">
+              <CLabel htmlFor="" >Motif</CLabel>
+              <CInput type="text" onChange={handleMotifChange} />
             </CCol>
           </CRow>
           <CRow>
@@ -137,9 +174,27 @@ const Transfert = () => {
               </CFormGroup>
             </CCol>
           </CRow>
+          <CRow>
+            <CCol md="12">
+              <CLabel >
+              Notification
+              </CLabel>
+              
+            </CCol>
+          </CRow>
+          <CRow>
+            <CCol>
+          <CSwitch onChange={handleNotificationChange} className="mr-1" color="primary" defaultUncheked />
+          </CCol>
+          </CRow>
         </CCardBody>
         <CCardFooter>
-          <CButton type="submit" size="sm" color="success" onClick={handleSubmit}>
+          <CButton
+            type="submit"
+            size="sm"
+            color="success"
+            onClick={handleSubmit}
+          >
             <CIcon name="cil-scrubber" /> Submit
           </CButton>
           <CButton type="reset" size="sm" color="danger">

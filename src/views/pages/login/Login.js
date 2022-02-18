@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import {
   CButton,
   CCard,
@@ -15,8 +15,52 @@ import {
   CRow
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
+import { useEffect } from 'react'
+import axios from 'axios'
+import { useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import { LoginTrue } from 'src/actions'
+import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 const Login = () => {
+  const [agents, setAgents] = useState([]);
+  const isLogged = useSelector(state => state.isLogged);
+  const [username,setUsername] = useState('');
+  const [password,setPassword] = useState('');
+  const dispatch = useDispatch();
+
+  const handleUsernameChange = (event) => {
+    setUsername(event.target.value);
+  }
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  }
+  const history= useHistory();
+  useEffect(() => {
+    axios.get("https://transfert-national.herokuapp.com/agent/")
+      .then((response) => {
+          setAgents(response.data);
+          console.log(response.data);
+      });
+  }, []);
+
+  const handleSubmit = (event)=>{
+    /*agents.forEach(element => {*/
+      if(username == 'username' && password == 'password'){
+        //login
+        dispatch(LoginTrue());
+        console.log(username+' '+password)
+      }
+   /* });*/
+    if (isLogged === true){
+      history.push('http://localhost:3000/#/dashboard');
+    }
+    else{
+      alert('Username ou mot de passe incorrect');
+      console.log(username+password);
+    }
+  }
   return (
     <div className="c-app c-default-layout flex-row align-items-center">
       <CContainer>
@@ -34,7 +78,7 @@ const Login = () => {
                           <CIcon name="cil-user" />
                         </CInputGroupText>
                       </CInputGroupPrepend>
-                      <CInput type="text" placeholder="Username" autoComplete="username" />
+                      <CInput type="text" placeholder="Username" autoComplete="username" onChange={handleUsernameChange}/>
                     </CInputGroup>
                     <CInputGroup className="mb-4">
                       <CInputGroupPrepend>
@@ -42,31 +86,18 @@ const Login = () => {
                           <CIcon name="cil-lock-locked" />
                         </CInputGroupText>
                       </CInputGroupPrepend>
-                      <CInput type="password" placeholder="Password" autoComplete="current-password" />
+                      <CInput type="password" placeholder="Password" autoComplete="current-password" onChange={handlePasswordChange}/>
                     </CInputGroup>
                     <CRow>
                       <CCol xs="6">
-                        <CButton color="primary" className="px-4">Login</CButton>
+                        <CButton color="primary" className="px-4" onClick={handleSubmit}>Login</CButton>
                       </CCol>
-                      <CCol xs="6" className="text-right">
-                        <CButton color="link" className="px-0">Forgot password?</CButton>
-                      </CCol>
+                     
                     </CRow>
                   </CForm>
                 </CCardBody>
               </CCard>
-              <CCard className="text-white bg-primary py-5 d-md-down-none" style={{ width: '44%' }}>
-                <CCardBody className="text-center">
-                  <div>
-                    <h2>Sign up</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                      labore et dolore magna aliqua.</p>
-                    <Link to="/register">
-                      <CButton color="primary" className="mt-3" active tabIndex={-1}>Register Now!</CButton>
-                    </Link>
-                  </div>
-                </CCardBody>
-              </CCard>
+              
             </CCardGroup>
           </CCol>
         </CRow>

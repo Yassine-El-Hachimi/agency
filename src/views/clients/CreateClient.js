@@ -42,7 +42,7 @@ function CreateClient() {
         }
         axios.post('http://127.0.0.1:8080/client/',newClient).then((response) => {
           console.log(response.data);
-        });;
+        });
         }
     else
     alert('Remplisser Tout Les Champs Obligatoires');
