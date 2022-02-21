@@ -20,6 +20,7 @@ function CreateClient() {
   const [fullName,setFullName] = useState('');
   const [titre,setTitre] = useState('');
   const [telephone,setTelephone] = useState('');
+  const [email, setEmail] = useState('');
 
   const handleNameChange = (event)=>{
     setFullName(event.target.value)
@@ -30,7 +31,9 @@ function CreateClient() {
   const handleTeleChange = (event)=>{
     setTelephone(event.target.value)
   }
-  
+  const handleEmailChange = (event)=>{
+    setEmail(event.target.value)
+  }
   const handleSubmit = (event) => {
     if(fullName !== '' && titre !== '' && telephone!=='')
         {
@@ -38,9 +41,10 @@ function CreateClient() {
         const newClient = {
           'fullName' : fullName,
           'gsm' : telephone,
-          'titre' : titre
+          'titre' : titre,
+          'email' : email
         }
-        axios.post('http://127.0.0.1:8080/client/',newClient).then((response) => {
+        axios.post('https://transfert-national.herokuapp.com/client/',newClient).then((response) => {
           console.log(response.data);
         });
         }
@@ -60,7 +64,7 @@ function CreateClient() {
             <CCol xs="12">
               <CFormGroup>
                 <CLabel htmlFor="name">Nom Complet Du Client</CLabel>
-                <CInput id="name" placeholder="Enter your name" required onChange={handleNameChange}/>
+                <CInput id="name" placeholder="Clients Full Name" required onChange={handleNameChange}/>
               </CFormGroup>
             </CCol>
           </CRow>
@@ -80,10 +84,18 @@ function CreateClient() {
                 <CInput
                   type="number"
                   id="name"
-                  placeholder="Enter your name"
+                  placeholder="Clients Phone"
                   required
                   onChange={handleTeleChange}
                 />
+              </CFormGroup>
+            </CCol>
+          </CRow>
+          <CRow>
+            <CCol xs="12">
+              <CFormGroup>
+                <CLabel htmlFor="name">Email</CLabel>
+                <CInput id="name" placeholder="Clients Email" required onChange={handleEmailChange}/>
               </CFormGroup>
             </CCol>
           </CRow>
@@ -93,9 +105,7 @@ function CreateClient() {
           <CButton type="submit" size="sm" color="success" onClick={handleSubmit}>
             <CIcon name="cil-scrubber" /> Submit
           </CButton>
-          <CButton type="reset" size="sm" color="danger">
-            <CIcon name="cil-ban" /> Reset
-          </CButton>
+     
         </CCardFooter>
       </CCard>
     </>

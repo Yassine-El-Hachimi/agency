@@ -5,12 +5,13 @@ import axios from 'axios'
 function AllAccounts() {
     const [comptes, updateComptes] = useState([]);
     useEffect(() => {
-      axios.get("https://transfert-national.herokuapp.com/comptes/").then((response) => {
+      axios.get("https://transfert-national.herokuapp.com/compte/").then((response) => {
         updateComptes(response.data);
+        console.log(response.data);
       });
       
     }, []);
-        const fields = ['id Client','Nom Complet', 'Solde', 'Date De Création']
+        const fields = ['Id Client','Nom Complet', 'Solde', 'Date De Création']
   return (
     <>
       <CCard>
@@ -28,11 +29,13 @@ function AllAccounts() {
             itemsPerPage={5}
             pagination
             scopedSlots={{
-              "Full Name": (item) => <td>{item.fullName}</td>,
-              GSM: (item) => <td>{item.telephone}</td>,
-              "Has Account": (item) => (
-                <td>{item.hasAccount ? "True" : "False"}</td>
+              "Nom Complet": (item) => <td>{item.client.fullName}</td>,
+              "Id Client": (item) => (
+                <td>{item.client.clientId}</td>
               ),
+              'Solde':(item)=> <td>{item.solde}</td>,
+
+
             }}
           />
         </CCardBody>

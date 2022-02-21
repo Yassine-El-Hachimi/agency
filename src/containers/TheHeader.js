@@ -9,19 +9,15 @@ import {
   CHeaderNavLink,
   CSubheader,
   CBreadcrumbRouter,
-  CLink
+  CLink,
+  CButton
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 
 // routes config
 import routes from '../routes'
-
-import { 
-  TheHeaderDropdown,
-  TheHeaderDropdownMssg,
-  TheHeaderDropdownNotif,
-  TheHeaderDropdownTasks
-}  from './index'
+import { LoginTrue } from 'src/actions'
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
 
 const TheHeader = () => {
   const dispatch = useDispatch()
@@ -37,6 +33,11 @@ const TheHeader = () => {
     dispatch({type: 'set', sidebarShow: val})
   }
 
+  const handleLogOut = ()=>{
+    dispatch(LoginTrue());
+    useHistory.push('/login');
+  }
+
   return (
     <CHeader withSubheader>
       <CToggler
@@ -49,19 +50,18 @@ const TheHeader = () => {
         className="ml-3 d-md-down-none"
         onClick={toggleSidebar}
       />
-      <CHeaderBrand className="mx-auto d-lg-none" to="/">
-        <CIcon name="logo" height="48" alt="Logo"/>
-      </CHeaderBrand>
+      
 
       <CHeaderNav className="d-md-down-none mr-auto">
         <CHeaderNavItem className="px-3" >
           <CHeaderNavLink to="/dashboard">Dashboard</CHeaderNavLink>
         </CHeaderNavItem>
+        <CButton color="danger" onClick={handleLogOut}>Log out</CButton>
         
       </CHeaderNav>
 
-      <CHeaderNav className="px-3">
-      </CHeaderNav>
+    
+
 
       <CSubheader className="px-3 justify-content-between">
         <CBreadcrumbRouter 

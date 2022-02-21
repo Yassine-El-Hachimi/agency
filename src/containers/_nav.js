@@ -21,11 +21,6 @@ const _nav =  [
       },
       {
         _tag: 'CSidebarNavItem',
-        name: 'Transfert multiple',
-        to: '/transfert-Multiple',
-      },
-      {
-        _tag: 'CSidebarNavItem',
         name: 'Historique',
         to: '/historique',
         //icon: 'cil-history',

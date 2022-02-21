@@ -33,10 +33,25 @@ const Historique = () => {
       console.log(response.data);
     });
   }, []);
+
+  const handleServir = (evt) => {
+    const Id  = evt.target.id;
+    console.log(Id);
+    axios.put("https://transfert-national.herokuapp.com/transfert/reception/"+Id).then((response) => {
+      console.log(response.data)
+    }
+
+    )
+    axios.get("https://transfert-national.herokuapp.com/transfert/").then((response) => {
+      updateTransferts(response.data);
+    });
+
+  }
   const fields = [
     "Id Transfert",
     "Id Donneur",
     "Id Bénéficiaire",
+    "Motif",
     "Type",
     "Etat",
     "Date Transfert",
@@ -62,8 +77,9 @@ const Historique = () => {
             pagination
             scopedSlots={{
               "Id Transfert": (item) => <td>{item.transfertId}</td>,
-              "Id Donneur": (item) => <td>{item.clientDonneur.id}</td>,
-              "Id Bénéficiaire": (item) => <td>{item.clientBeneficaire.id}</td>,
+              "Id Donneur": (item) => <td>{item.clientDonneur?.clientId}</td>,
+              "Id Bénéficiaire": (item) => <td>{item.clientBeneficaire?.clientId}</td>,
+              "Motif": (item) => <td>{item.motif}</td>,
               "Type": (item) => <td>{item.typeTransfert}</td>,
               "Etat": (item) => <td>{item.etat}</td>,
               "Date Transfert": (item) => <td>{item.dateTransfert}</td>,
@@ -71,7 +87,7 @@ const Historique = () => {
               "Actions": (item) => (
                 <td>
 
-                    <CButton color="primary">Servis</CButton>
+                    <CButton color="primary" id={item.transfertId} onClick={handleServir}>Servir</CButton>
 
                 </td>
               ),

@@ -23,10 +23,9 @@ function NewAccount() {
 
   const [clients, updateClients] = useState([]);
   useEffect(() => {
-    axios.get("https://transfert-national.herokuapp.com/client/").then((response) => {
+    axios.get("https://transfert-national.herokuapp.com/client/clientsHasNoCompte").then((response) => {
       updateClients(response.data);
     });
-    console.log(clients);
   }, []);
 
   const handleIdChange = (event)=>{
@@ -75,9 +74,6 @@ function NewAccount() {
         <CCardFooter>
           <CButton type="submit" size="sm" color="success" onClick={handleSubmit}>
             <CIcon name="cil-scrubber" /> Submit
-          </CButton>
-          <CButton type="reset" size="sm" color="danger">
-            <CIcon name="cil-ban" /> Reset
           </CButton>
         </CCardFooter>
       </CCard>

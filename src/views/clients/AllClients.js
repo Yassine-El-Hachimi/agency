@@ -11,7 +11,7 @@ function AllClients() {
     });
     
     }, []);
-      const fields = ['id','Full Name', 'GSM', 'Has Account']
+      const fields = ['id','Full Name', 'GSM', 'Email']
     return (
         <>
             <CCard>
@@ -41,10 +41,10 @@ function AllClients() {
                         {item.gsm}
                     </td>
                   ),
-                'Has Account':
+                'Email':
                   (item)=>(
                     <td>
-                        {item.hasAccount? 'True':'False'}
+                        {item.email}
                     </td>
                   )
               }}

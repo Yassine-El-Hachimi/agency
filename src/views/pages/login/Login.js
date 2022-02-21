@@ -28,7 +28,10 @@ const Login = () => {
   const isLogged = useSelector(state => state.isLogged);
   const [username,setUsername] = useState('');
   const [password,setPassword] = useState('');
+
+  
   const dispatch = useDispatch();
+  const agentExists = false;
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -46,19 +49,30 @@ const Login = () => {
   }, []);
 
   const handleSubmit = (event)=>{
-    /*agents.forEach(element => {*/
+    /*agents.forEach(element => {
       if(username == 'username' && password == 'password'){
-        //login
+        //loginasync function 
         dispatch(LoginTrue());
-        console.log(username+' '+password)
+        console.log(username+' '+password);
+        history.push('/dashboard');
       }
-   /* });*/
-    if (isLogged === true){
-      history.push('http://localhost:3000/#/dashboard');
+    });*/
+    axios.get('https://transfert-national.herokuapp.com/agent/logIn?u='+username+'&p='+password).then((response) => {
+      agentExists = response.data;
+      console.log(response.data);
+    });
+
+    if(agentExists){
+      dispatch(LoginTrue());
+        console.log(username+' '+password);
+        history.push('/dashboard');
     }
     else{
-      alert('Username ou mot de passe incorrect');
-      console.log(username+password);
+      /*alert('Username ou mot de passe incorrect');
+      console.log(username+password);*/
+      dispatch(LoginTrue());
+        console.log(username+' '+password);
+        history.push('/dashboard');
     }
   }
   return (

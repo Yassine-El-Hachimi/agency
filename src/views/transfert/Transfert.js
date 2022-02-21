@@ -32,7 +32,7 @@ const Transfert = () => {
   const [montant, setMontant] = useState(0);
   const [motif, setMotif] = useState("");
   const [type, setType] = useState("");
-  const [notification,setNotification] = useState(false);
+  const [notification,setNotification] = useState('off');
 
   const handleClientBenChange = (event) => {
     setIdClientBen(event.target.value);
@@ -55,14 +55,14 @@ const Transfert = () => {
 
   const handleSubmit = (event) => {
     if (IdClientBen != null && IdClientDon != null && type !== "") {
-      console.log(IdClientBen + " " + IdClientDon + " " + type + " " + montant);
+      console.log(IdClientBen + " " + IdClientDon + " " + notification + " " + montant);
       const transfert = {
         'clientBeneficaireId': IdClientBen,
         'clientDonneurId': IdClientDon,
         'typeTransfert': type,
         'montant': montant,
         'motif': motif,
-        'notification': notification
+        'notification': notification === 'on'?true:false
       };
 
       axios
@@ -130,7 +130,7 @@ const Transfert = () => {
           </CRow>
           <CRow>
             <CCol md="12">
-              <CLabel htmlFor="" >Motif</CLabel>
+              <CLabel required htmlFor="" >Motif</CLabel>
               <CInput type="text" onChange={handleMotifChange} />
             </CCol>
           </CRow>
@@ -144,7 +144,7 @@ const Transfert = () => {
                   custom
                   id="inline-radio1"
                   name="inline-radios"
-                  value="option1"
+                  value="Espece"
                 />
                 <CLabel variant="custom-checkbox" htmlFor="inline-radio1">
                   Espèce vers espèce
@@ -155,7 +155,7 @@ const Transfert = () => {
                   custom
                   id="inline-radio2"
                   name="inline-radios"
-                  value="option2"
+                  value="Wallet"
                 />
                 <CLabel variant="custom-checkbox" htmlFor="inline-radio2">
                   Espèce vers wallet
@@ -166,7 +166,7 @@ const Transfert = () => {
                   custom
                   id="inline-radio3"
                   name="inline-radios"
-                  value="option3"
+                  value="GAB-BOA"
                 />
                 <CLabel variant="custom-checkbox" htmlFor="inline-radio3">
                   Espèce vers Gab
@@ -197,9 +197,7 @@ const Transfert = () => {
           >
             <CIcon name="cil-scrubber" /> Submit
           </CButton>
-          <CButton type="reset" size="sm" color="danger">
-            <CIcon name="cil-ban" /> Reset
-          </CButton>
+          
         </CCardFooter>
       </CCard>
     </>

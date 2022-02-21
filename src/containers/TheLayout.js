@@ -16,7 +16,6 @@ const TheLayout = () => {
         <div className="c-body">
           <TheContent/>
         </div>
-        <TheFooter/>
       </div>
     </div>
   )
